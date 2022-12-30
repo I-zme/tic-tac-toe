@@ -1,27 +1,57 @@
-const gameBoard = (() => {})();
+const gameBoard = (() => {
+  let _board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+  const updateBoard = (index, sign) => (_board[index] = sign);
+  const clearBoard = () => _board.fill(0);
+  const getBoard = () => _board;
+
+  return { getBoard, clearBoard, updateBoard };
+})();
 
 const Player = (sign, controller = 'human') => {
-  let _score = 0;
+  const _sign = sign;
+  const getSign = () => _sign;
 
-  const playerBoard = (board) => {
-    board.reduce(function (list, cell, index) {
-      if (cell === sign) list.push(index);
-      return list;
-    }, []);
-  };
+  const _board = [];
+  const updateBoard = (index) => _board.push(index);
+  const getBoard = () => _board;
+  const clearBoard = () => _board.splice(0, _board.length);
 
-  const updateScore = () => (_score += 1);
-  const clearScore = () => (_score = 0);
-  const getScore = () => _score;
-  return { getScore, updateScore, clearScore };
+  return { getSign, updateBoard, getBoard, clearBoard };
 };
 
-const Game = (() => {
-  // variables
-  //   const numberOfRounds = rounds;
-  let currentRound = 1;
+// const rounds = 5;
+const playerX = Player('X');
+const playerO = Player('O');
 
-  //   utility functions
+const Round = () => {
+  const play = (winner = playerX, looser = playerO) => {
+    [winner, looser].forEach((player) => player.clearBoard());
+    gameBoard.clearBoard();
+
+    round: for (let i = 0; i < 9; i++) {
+      let player;
+      if (i % 2 === 0) {
+        player = looser;
+      } else {
+        player = winner;
+      }
+      let index = prompt('enter location');
+      gameBoard.updateBoard(index, player.getSign());
+      console.log(gameBoard.getBoard());
+
+      player.updateBoard(Number(index));
+      if (i >= 4) {
+        let tempBoard = player.getBoard();
+        if (checkRows(tempBoard)) {
+          winner = player;
+          return winner;
+        }
+      }
+    }
+    return (winner = 0); //0 means draw, no winner
+  };
+
   const difference = (array) => {
     [a, b, c] = array.sort();
     return c - b === b - a ? c - b : 0;
@@ -53,9 +83,47 @@ const Game = (() => {
         if (isWinningRow(tempArray)) return tempArray;
       }
     }
+    return false;
   };
 
-  return { checkRows };
-})();
+  return { play, checkRows, isWinningRow };
+};
 
-console.log(Game.checkRows([0, 1, 4, 6, 5, 3]));
+// function evalPlayerMove(player) {
+//   if (checkRows(player.getBoard())) {
+//     player.updateScore;
+//     winner = player;
+//     break innerRound;
+//   }
+// }
+
+const Game = ((rounds = 2) => {
+  // variables
+  //   const numberOfRounds = rounds;
+  let _score = { X: 0, O: 0 };
+
+  const updateScore = (winner) => (_score[winner] += 1);
+  const clearScore = () => (_score = 0);
+  const getScore = () => _score;
+
+  const play = () => {
+    let winner;
+    let looser;
+    let newRound = Round();
+    for (let currentRound = 1; currentRound <= rounds; currentRound++) {
+      //   [winner, looser] =
+      //     currentRound === 1 ? newRound.play() : newRound.play(winner, looser);
+      winner =
+        currentRound === 1 ? newRound.play() : newRound.play(winner, looser);
+      if (winner) {
+        looser = winner == playerX ? playerO : playerX;
+        console.log(winner.getSign() + ' won', looser.getSign() + ' lost');
+        updateScore(winner.getSign());
+      } else {
+        console.log("it's a draw");
+      }
+    }
+  };
+
+  return { updateScore, getScore, play };
+})();
