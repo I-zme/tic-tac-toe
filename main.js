@@ -121,6 +121,9 @@ const Game = ((rounds = 2) => {
         updateScore(winner.getSign());
       } else {
         console.log("it's a draw");
+        // choose randomly which one will play first next round
+        winner = [playerX, playerO][Math.floor(Math.random() * 2)];
+        looser = winner == playerX ? playerO : playerX;
       }
     }
   };
