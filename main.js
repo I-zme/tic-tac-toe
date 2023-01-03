@@ -16,8 +16,55 @@ const Player = (sign, controller = 'human') => {
   const updateBoard = (index) => _board.push(index);
   const getBoard = () => _board;
   const clearBoard = () => _board.splice(0, _board.length);
+  const _AIMove = () => {};
 
-  return { getSign, updateBoard, getBoard, clearBoard };
+  const timeout = async (ms) => new Promise((res) => setTimeout(res, ms));
+  let next = false; // this is to be changed on user input
+
+  async function waitUserInput() {
+    while (next === false) await timeout(50); // pauses script
+    next = false; // reset var
+  }
+
+  let _tempClickedCell;
+
+  const handler = function (e) {
+    if (
+      e.target.closest('#game-grid') &&
+      !e.target.closest('.grid-item').classList.contains('filled')
+    ) {
+      next = true;
+      _tempClickedCell = e.target.closest('.grid-item');
+    }
+  };
+
+  async function _humanMove() {
+    next = false;
+    document.addEventListener('click', (e) => {
+      handler(e);
+    });
+    await waitUserInput();
+    let gridCell = _tempClickedCell;
+    displayController.fillCell(gridCell, _sign);
+    let index = gridCell.getAttribute('data-id');
+    document.removeEventListener('click', (e) => {
+      handler(e);
+    });
+    return index;
+  }
+
+  const move = () => {
+    controller === 'human' ? _humanMove() : _AIMove();
+  };
+
+  return {
+    getSign,
+    updateBoard,
+    getBoard,
+    clearBoard,
+    move,
+    _humanMove,
+  };
 };
 
 // const rounds = 5;
@@ -25,21 +72,25 @@ const playerX = Player('X');
 const playerO = Player('O');
 
 const Round = () => {
-  const play = (winner = playerX, looser = playerO) => {
+  let currentTurnSign;
+
+  const play = async (winner = playerX, looser = playerO) => {
     [winner, looser].forEach((player) => player.clearBoard());
     gameBoard.clearBoard();
+    displayController.clearCellClasses();
 
     round: for (let i = 0; i < 9; i++) {
+      let index;
       let player;
       if (i % 2 === 0) {
         player = looser;
       } else {
         player = winner;
       }
-      let index = prompt('enter location');
-      gameBoard.updateBoard(index, player.getSign());
-      console.log(gameBoard.getBoard());
+      currentTurnSign = player.getSign();
+      index = await player._humanMove();
 
+      gameBoard.updateBoard(index, currentTurnSign);
       player.updateBoard(Number(index));
       if (i >= 4) {
         let tempBoard = player.getBoard();
@@ -89,14 +140,6 @@ const Round = () => {
   return { play, checkRows, isWinningRow };
 };
 
-// function evalPlayerMove(player) {
-//   if (checkRows(player.getBoard())) {
-//     player.updateScore;
-//     winner = player;
-//     break innerRound;
-//   }
-// }
-
 const Game = ((rounds = 2) => {
   // variables
   //   const numberOfRounds = rounds;
@@ -104,21 +147,31 @@ const Game = ((rounds = 2) => {
 
   const updateScore = (winner) => (_score[winner] += 1);
   const clearScore = () => (_score = 0);
-  const getScore = () => _score;
+  const _getScore = (sign) => _score[sign];
 
-  const play = () => {
+  const play = async () => {
+    displayController.updateDetails(displayController.totalRounds, rounds);
+    [displayController.scoreO, displayController.scoreX].forEach((box) =>
+      displayController.updateDetails(box, 0)
+    );
     let winner;
     let looser;
     let newRound = Round();
     for (let currentRound = 1; currentRound <= rounds; currentRound++) {
-      //   [winner, looser] =
-      //     currentRound === 1 ? newRound.play() : newRound.play(winner, looser);
+      displayController.updateDetails(
+        displayController.currentRound,
+        currentRound
+      );
       winner =
-        currentRound === 1 ? newRound.play() : newRound.play(winner, looser);
+        currentRound === 1
+          ? await newRound.play()
+          : await newRound.play(winner, looser);
       if (winner) {
         looser = winner == playerX ? playerO : playerX;
         console.log(winner.getSign() + ' won', looser.getSign() + ' lost');
         updateScore(winner.getSign());
+        displayController.updateDetails(displayController.scoreO, _score.O);
+        displayController.updateDetails(displayController.scoreX, _score.X);
       } else {
         console.log("it's a draw");
         // choose randomly which one will play first next round
@@ -128,5 +181,38 @@ const Game = ((rounds = 2) => {
     }
   };
 
-  return { updateScore, getScore, play };
+  return { updateScore, play };
+})();
+
+const displayController = (() => {
+  const gridItems = document.querySelectorAll('.grid-item');
+  const restartBtn = document.querySelector('.restart');
+  const menuBtn = document.querySelector('.menu');
+
+  const scoreX = document.querySelector('#score-x-num');
+  const scoreO = document.querySelector('#score-o-num');
+  const totalRounds = document.querySelector('#total-rounds');
+  const currentRound = document.querySelector('#current-round');
+
+  const updateDetails = (htmlBox, num) => {
+    htmlBox.textContent = num;
+  };
+
+  const clearCellClasses = () => {
+    gridItems.forEach((cell) => (cell.className = 'grid-item |'));
+  };
+
+  const fillCell = (cell, sign) => {
+    cell.classList.add('filled', `display-${sign}`);
+  };
+
+  return {
+    fillCell,
+    clearCellClasses,
+    updateDetails,
+    totalRounds,
+    currentRound,
+    scoreO,
+    scoreX,
+  };
 })();
