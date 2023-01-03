@@ -64,3 +64,22 @@ svg {
     scroll-behavior: auto !important;
   }
 }
+
+#game-grid {
+  background-color: grey;
+  display: grid;
+  width: max-content;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+}
+
+#game-grid > .grid-item {
+  border: 1px solid;
+}
+
+.grid-item.display-X::after {
+  content: 'x';
+}
+.grid-item.display-O::after {
+  content: 'o';
+}
