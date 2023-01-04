@@ -25,14 +25,16 @@ numRounds.addEventListener('focusout', () => {
 });
 
 // on clicking start game
+
 playGame.addEventListener('click', () => {
-  let rounds =
+  const rounds =
     numRounds.value !== 'custom'
-      ? Number(numRounds.value)
+      ? Number(numRounds.value) === 0
+        ? 1
+        : Number(numRounds.value)
       : customRounds.value >= 1
       ? Number(customRounds.value)
       : 1;
-
   const _findCheckedRadioBtn = (btns) => {
     return Array.from(btns).find((item) => item.checked);
   };
@@ -42,8 +44,10 @@ playGame.addEventListener('click', () => {
       : defaultValue;
   };
 
-  let playerXController = _getBtnValue(playerXControllerBtns, 'human');
-  let playerOController = _getBtnValue(playerOControllerBtns, 'human');
-  Game.play(rounds, playerXController, playerOController);
+  const playerXController = _getBtnValue(playerXControllerBtns, 'human');
+  const playerOController = _getBtnValue(playerOControllerBtns, 'human');
+  sessionStorage.setItem('numberOfRounds', rounds);
+  sessionStorage.setItem('playerXController', playerXController);
+  sessionStorage.setItem('playerXController', playerOController);
   location.href = './game.html';
 });

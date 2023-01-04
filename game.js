@@ -70,10 +70,6 @@ const Player = (sign, controller = 'human') => {
   };
 };
 
-// const rounds = 5;
-const playerX = Player('X');
-const playerO = Player('O');
-
 const Round = () => {
   const _difference = (array) => {
     [a, b, c] = array.sort();
@@ -142,7 +138,7 @@ const Round = () => {
   return { play };
 };
 
-const Game = ((rounds = 2) => {
+const Game = (() => {
   // variables
   //   const numberOfRounds = rounds;
   let _score = { X: 0, O: 0 };
@@ -151,7 +147,7 @@ const Game = ((rounds = 2) => {
   const clearScore = () => (_score = 0); //is needed?
   const _getScore = (sign) => _score[sign]; //is needed?
 
-  const play = async () => {
+  const play = async (rounds) => {
     displayController.updateDetails(displayController.totalRounds, rounds);
     [displayController.scoreO, displayController.scoreX].forEach((box) =>
       displayController.updateDetails(box, 0)
@@ -191,6 +187,7 @@ const displayController = (() => {
   const restartBtn = document.querySelector('.restart');
   const menuBtn = document.querySelector('.menu');
   menuBtn.addEventListener('click', () => {
+    sessionStorage.clear();
     location.href = './index.html';
   });
 
@@ -221,3 +218,10 @@ const displayController = (() => {
     scoreX,
   };
 })();
+
+const rounds = sessionStorage.getItem('numberOfRounds');
+const playerOController = sessionStorage.getItem('playerOController');
+const playerXController = sessionStorage.getItem('playerXController');
+const playerX = Player('X');
+const playerO = Player('O');
+Game.play(rounds);
