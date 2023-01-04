@@ -9,6 +9,51 @@
     <title>Document</title>
 </head>
 <body>
-    
+
+    <div class="choose-play">
+        <h3>shall we play a game?</h3>
+        <a href="#choose-rounds"><button id="yes-play">yes</button></a>
+    </div>
+
+    <div id="choose-rounds">
+        <h3>Best of-</h3>
+        <Select id="select-rounds">
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="endless">life sentence</option>
+            <option value="custom">custom</option>
+        </Select>
+        <input type="number" name="cutsom-rounds" id="cutsom-rounds" disabled>
+    </div>
+    <div class="choose-players">
+        <div class="player-x">
+            <h3>Player 1</h3>
+            <div class="player-sign">
+                weapon of choice: X
+            </div>
+            <div class="choose-controller">
+                <input type="radio" name="choose-controller-x" class="human">human</input>
+                <input type="radio" name="choose-controller-x" class="ai">AI</input>
+            </div>
+
+        </div>
+        <div class="player-o">
+            <h3>Player 2</h3>
+            <div class="player-sign">
+                weapon of choice: O
+            </div>
+            <div class="choose-controller">
+                <input type="radio" name="choose-controller-o" class="human">human</input>
+                <input type="radio" name="choose-controller-o" class="ai">AI</input>
+            </div>
+
+        </div>
+    </div>
+    <div class="start-game">
+        <p>Ready to play?</p>
+        <button id="start-game-btn">START GAME</button>
+    </div>
+
 </body>
 </html>
