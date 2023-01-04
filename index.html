@@ -18,13 +18,14 @@
     <div id="choose-rounds">
         <h3>Best of-</h3>
         <Select id="select-rounds">
+            <option value="" selected disabled>select number of rounds</option>
             <option value="1">1</option>
             <option value="3">3</option>
             <option value="5">5</option>
-            <option value="endless">life sentence</option>
+            <option value="25">life sentence</option>
             <option value="custom">custom</option>
         </Select>
-        <input type="number" name="cutsom-rounds" id="cutsom-rounds" disabled>
+        <input type="number" name="cutsom-rounds" min="1" id="cutsom-rounds" disabled>
     </div>
     <div class="choose-players">
         <div class="player-x">
@@ -33,8 +34,8 @@
                 weapon of choice: X
             </div>
             <div class="choose-controller">
-                <input type="radio" name="choose-controller-x" class="human">human</input>
-                <input type="radio" name="choose-controller-x" class="ai">AI</input>
+                <input type="radio" name="choose-controller-x" class="human" value="human">human</input>
+                <input type="radio" name="choose-controller-x" class="ai" value="ai">AI</input>
             </div>
 
         </div>
@@ -44,8 +45,8 @@
                 weapon of choice: O
             </div>
             <div class="choose-controller">
-                <input type="radio" name="choose-controller-o" class="human">human</input>
-                <input type="radio" name="choose-controller-o" class="ai">AI</input>
+                <input type="radio" name="choose-controller-o" class="human" value="human">human</input>
+                <input type="radio" name="choose-controller-o" class="ai" value="ai">AI</input>
             </div>
 
         </div>
