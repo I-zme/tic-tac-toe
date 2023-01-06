@@ -10,51 +10,55 @@
 </head>
 <body>
 
-    <div class="choose-play">
-        <h3>shall we play a game?</h3>
-        <a href="#choose-rounds"><button id="yes-play">yes</button></a>
-    </div>
-
-    <div id="choose-rounds">
-        <h3>Best of-</h3>
-        <Select id="select-rounds">
-            <option value="" selected disabled>select number of rounds</option>
-            <option value="1">1</option>
-            <option value="3">3</option>
-            <option value="5">5</option>
-            <option value="25">life sentence</option>
-            <option value="custom">custom</option>
-        </Select>
-        <input type="number" name="cutsom-rounds" min="1" id="cutsom-rounds" disabled>
-    </div>
-    <div class="choose-players">
-        <div class="player-x">
-            <h3>Player 1</h3>
-            <div class="player-sign">
-                weapon of choice: X
-            </div>
-            <div class="choose-controller">
-                <input type="radio" name="choose-controller-x" class="human" value="human">human</input>
-                <input type="radio" name="choose-controller-x" class="ai" value="ai">AI</input>
-            </div>
-
+    <section class="intro">
+        <div class="choose-play">
+            <h3>shall we play a game?</h3>
+            <a href="#choose-rounds"><button id="yes-play" class="btn-no-bg">yes</button></a>
         </div>
-        <div class="player-o">
-            <h3>Player 2</h3>
-            <div class="player-sign">
-                weapon of choice: O
+    </section>
+    <section class="user-choices">
+        <div id="choose-rounds">
+            <h3>Number of rounds:</h3>
+            <Select id="select-rounds">
+                <option value="" selected disabled>choose number</option>
+                <option value="1">1</option>
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="25">life sentence</option>
+                <option value="custom">custom</option>
+            </Select>
+            <div class="custom-container">
+                <label for="custom-rounds">Custom:</label>
+                <input type="number" name="cutsom-rounds" min="1" id="cutsom-rounds" disabled>
             </div>
-            <div class="choose-controller">
-                <input type="radio" name="choose-controller-o" class="human" value="human">human</input>
-                <input type="radio" name="choose-controller-o" class="ai" value="ai">AI</input>
-            </div>
-
         </div>
-    </div>
-    <div class="start-game">
-        <p>Ready to play?</p>
-        <button id="start-game-btn">START GAME</button>
-    </div>
+        <div class="choose-players">
+            <div class="player-x">
+                <h3>Player 1</h3>
+                <div class="player-sign">
+                    weapon of choice: <span class="sign">X</span>
+                </div>
+                <div class="choose-controller">
+                    <input type="radio" name="choose-controller-x" class="human" value="human" id="human-x"></input><label for="human-x">human</label>
+                   <input type="radio" name="choose-controller-x" class="ai" value="ai" id="ai-x"></input> <label for="ai-x">AI</label>
+                </div>
+            </div>
+            <div class="player-o">
+                <h3>Player 2</h3>
+                <div class="player-sign">
+                    weapon of choice: <span class="sign">O</span>
+                </div>
+                <div class="choose-controller">
+                    <input type="radio" name="choose-controller-o" class="human" value="human" id="human-o"></input><label for="human-o">human</label>
+                    <input type="radio" name="choose-controller-o" class="ai" value="ai" id="ai-o"></input><label for="ai-o">AI</label>
+                </div>
+            </div>
+        </div>
+        <div class="start-game">
+            <p>Ready to play?</p>
+            <button id="start-game-btn" class="btn-no-bg">START GAME</button>
+        </div>
+    </section>
 
 </body>
 </html>

@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Give+You+Glory&family=Nothing+You+Could+Do&family=Permanent+Marker&family=Reenie+Beanie&family=Rock+Salt&family=Splash&display=swap');
+
+:root {
+  /* font-family: 'Caveat Brush', cursive; //maybe not for body
+font-family: 'Give You Glory', cursive; //not for body
+font-family: 'Nothing You Could Do', cursive; //not for body
+font-family: 'Permanent Marker', cursive;
+font-family: 'Reenie Beanie', cursive;//body
+font-family: 'Rock Salt', cursive;
+font-family: 'Splash', cursive; //not for body, maybe just not */
+
+  --ff-body: 'Rock Salt', cursive;
+}
+
 /* RESET */
 /* Box sizing rules */
 *,
@@ -65,6 +79,78 @@ svg {
   }
 }
 
+/* GENERAL STYLING */
+section {
+  font-family: var(--ff-body);
+  min-height: 100%;
+}
+
+section h3 {
+  font-weight: 600;
+}
+
+section.intro {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2rem;
+}
+
+section.user-choices {
+  text-align: center;
+
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  align-content: space-evenly;
+}
+
+#choose-rounds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+#choose-rounds select#select-rounds > option {
+  font-size: 1rem;
+}
+
+input#cutsom-rounds {
+  width: 5ch;
+}
+
+.choose-players {
+  display: flex;
+  gap: 2em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.choose-players .choose-controller label {
+  display: inline-block;
+  font-family: 'Permanent Marker';
+  cursor: pointer;
+  margin: 1rem;
+}
+.choose-players .choose-controller label:hover {
+  color: grey;
+  transform: scale(1.2);
+}
+
+input[type='radio']:checked + label {
+}
+
+.choose-players .choose-controller input[type='radio'] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* GAME STYLING */
 #game-grid {
   background-color: grey;
   display: grid;
@@ -82,4 +168,17 @@ svg {
 }
 .grid-item.display-O::after {
   content: 'o';
+}
+
+/* utilities */
+.btn-no-bg {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  filter: drop-shadow(0 0 10px grey);
+}
+
+.btn-no-bg:hover {
+  filter: drop-shadow(0 0 10px red);
 }

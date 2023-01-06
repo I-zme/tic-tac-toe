@@ -18,13 +18,12 @@ numRounds.addEventListener('focusout', () => {
       ? customRounds.toggleAttribute('disabled')
       : '';
   } else {
-    customRounds.hasAttribute('disabled')
-      ? ''
-      : customRounds.toggleAttribute('disabled');
+    if (!customRounds.hasAttribute('disabled')) {
+      customRounds.toggleAttribute('disabled');
+      customRounds.value = '';
+    }
   }
 });
-
-// on clicking start game
 
 playGame.addEventListener('click', () => {
   const rounds =
