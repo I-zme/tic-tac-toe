@@ -227,22 +227,43 @@ input[type='radio']:checked + label::after {
 
 /* GAME STYLING */
 #game-grid {
-  background-color: grey;
   display: grid;
-  width: max-content;
+  height: 300px;
+  width: 300px;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
+  position: relative;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
-#game-grid > .grid-item {
-  border: 1px solid;
+#game-grid::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url('./img/board.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  z-index: -1;
+}
+
+.grid-item {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .grid-item.display-X::after {
-  content: 'x';
+  content: url('./img/cross.png');
 }
 .grid-item.display-O::after {
-  content: 'o';
+  content: url('./img/naught.png');
 }
 
 /* utilities */
