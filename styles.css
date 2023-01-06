@@ -80,9 +80,66 @@ svg {
 }
 
 /* GENERAL STYLING */
+body {
+  background-image: url('./img/TexturesCom_ConcreteBare0432_3_seamless_S.png');
+}
+
+/* background imagery addition for the index html */
+body#index::after {
+  content: url('./img/Group\ 2.png');
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+body#index::before {
+  content: url('./img/Group\ 4.png');
+  position: absolute;
+  bottom: -10%;
+  right: 2%;
+}
+
+section.intro::before {
+  content: url('./img/Group\ 3.png');
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.user-choices::before {
+  content: url('./img/Group\ 7.png');
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.user-choices::after {
+  content: url('./img/Group\ 6.png');
+  position: absolute;
+  bottom: 5%;
+  right: -5%;
+}
+
+/* background imagery addition for the index html */
+body#game::after {
+  content: url('./img/Group\ 6.png');
+  position: absolute;
+  bottom: 5%;
+  left: -8%;
+}
+
+body#game::before {
+  content: url('./img/Group\ 8.png');
+  position: absolute;
+  bottom: 0%;
+  right: 1%;
+}
+
+/*  */
 section {
   font-family: var(--ff-body);
   min-height: 100%;
+  position: relative;
 }
 
 section h3 {
@@ -99,7 +156,6 @@ section.intro {
 
 section.user-choices {
   text-align: center;
-
   font-size: clamp(1rem, 5vw, 1.5rem);
   display: grid;
   gap: 1rem;
@@ -135,13 +191,32 @@ input#cutsom-rounds {
   font-family: 'Permanent Marker';
   cursor: pointer;
   margin: 1rem;
+  padding: 0.3em;
+  position: relative;
 }
 .choose-players .choose-controller label:hover {
+  --_transform: scale(1.2);
   color: grey;
-  transform: scale(1.2);
+  transform: var(--_transform);
+  -webkit-transform: var(--_transform);
+  -moz-transform: var(--_transform);
 }
 
 input[type='radio']:checked + label {
+  --_border: 2px solid black;
+  border: var(--_border);
+  border-radius: 70% 70% 60% 92%;
+}
+
+input[type='radio']:checked + label::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: var(--_border);
+  border-radius: 79% 57% 83% 50%;
 }
 
 .choose-players .choose-controller input[type='radio'] {
@@ -177,8 +252,10 @@ input[type='radio']:checked + label {
   cursor: pointer;
   font-weight: 600;
   filter: drop-shadow(0 0 10px grey);
+  /* -webkit-filter: drop-shadow(); */
 }
 
 .btn-no-bg:hover {
   filter: drop-shadow(0 0 10px red);
+  /* -webkit-filter: drop-shadow(); */
 }
