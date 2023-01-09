@@ -39,14 +39,7 @@ playGame.addEventListener('click', () => {
   const _findCheckedRadioBtn = (btns) => {
     return Array.from(btns).find((item) => item.checked);
   };
-  const _getBtnValue = (btns, defaultValue) => {
-    return _findCheckedRadioBtn(btns)
-      ? _findCheckedRadioBtn(btns).value
-      : defaultValue;
-  };
 
-  //   const playerXController = _getBtnValue(playerXControllerBtns, 'human');
-  //   const playerOController = _getBtnValue(playerOControllerBtns, 'ai');
   const playerOController = _findCheckedRadioBtn(playerOControllerBtns).value;
   const playerXController = _findCheckedRadioBtn(playerXControllerBtns).value;
   console.log(playerOController, playerXController);

@@ -54,17 +54,18 @@ const Player = (sign, controller) => {
     return index;
   };
   const _AIMove = async (level) => {
-    // if (level === 'beginner') {
+    await timeout(500);
     let options = gameBoard.getBoard().reduce(function (a, e, i) {
       if (e === 0) a.push(i);
       return a;
     }, []);
+    // if (level === 'beginner') {
     let index = options[Math.floor(Math.random() * options.length)];
     let gridCell = displayController.fillCell(
       document.querySelector(`[data-id="${index}"]`),
       _sign
     );
-    console.log(_sign, index, gridCell);
+    await timeout(500);
     return index;
     // }
   };
@@ -75,7 +76,7 @@ const Player = (sign, controller) => {
     } else if (_controller === 'ai') {
       return _AIMove();
     } else {
-      console.log('problem' + _controller);
+      console.log('problem with controller');
     }
   };
 
