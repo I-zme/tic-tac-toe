@@ -2,6 +2,7 @@ const yesPlayBtn = document.querySelector('#yes-play'); //probably unncessary
 const noPlayBtn = document.querySelector('#no-play'); //choose functionality
 const numRounds = document.querySelector('#select-rounds');
 const customRounds = document.querySelector('#cutsom-rounds');
+const customRoundsDiv = document.querySelector('.custom-container');
 
 const playerXControllerBtns = document.querySelectorAll(
   '[name="choose-controller-x"]'
@@ -14,26 +15,27 @@ const playGame = document.querySelector('#start-game-btn');
 
 numRounds.addEventListener('focusout', () => {
   if (numRounds.value === 'custom') {
-    customRounds.hasAttribute('disabled')
-      ? customRounds.toggleAttribute('disabled')
-      : '';
+    customRoundsDiv.hasAttribute('data-visible')
+      ? ''
+      : customRoundsDiv.toggleAttribute('data-visible');
   } else {
-    if (!customRounds.hasAttribute('disabled')) {
-      customRounds.toggleAttribute('disabled');
+    if (customRoundsDiv.hasAttribute('data-visible')) {
+      customRoundsDiv.toggleAttribute('data-visible');
       customRounds.value = '';
     }
   }
 });
 
 playGame.addEventListener('click', () => {
+  const defaultNumberOfRounds = 3;
   const rounds =
     numRounds.value !== 'custom'
       ? Number(numRounds.value) === 0
-        ? 1
+        ? defaultNumberOfRounds
         : Number(numRounds.value)
       : customRounds.value >= 1
       ? Number(customRounds.value)
-      : 1;
+      : defaultNumberOfRounds;
   const _findCheckedRadioBtn = (btns) => {
     return Array.from(btns).find((item) => item.checked);
   };

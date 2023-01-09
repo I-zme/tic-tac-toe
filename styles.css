@@ -84,58 +84,81 @@ body {
   background-image: url('./img/TexturesCom_ConcreteBare0432_3_seamless_S.png');
 }
 
-/* background imagery addition for the index html */
-body#index::after {
-  content: url('./img/Group\ 2.png');
+/* background imagery addition for index and game html */
+body#index::after,
+body#index::before,
+section.intro::before,
+.user-choices::before,
+.user-choices::after,
+body#game::after,
+body#game::before {
+  content: '';
   position: absolute;
+  width: var(--_width);
+  height: calc(var(--_width) / var(--_aspect-ratio));
+  background-image: var(--_img);
+  background-size: 100% 100%;
+}
+
+body#index::after {
+  --_width: clamp(150px, 20vw, 300px);
+  --_aspect-ratio: 1.5;
+  --_img: url('./img/tally-n-number.png');
   top: 0;
   left: 0;
 }
 
 body#index::before {
-  content: url('./img/Group\ 4.png');
-  position: absolute;
-  bottom: -10%;
+  --_width: clamp(200px, 25vw, 400px);
+  --_aspect-ratio: 3.5;
+  --_img: url('./img/left-my-soul.png');
+  bottom: -3%;
   right: 2%;
 }
 
 section.intro::before {
-  content: url('./img/Group\ 3.png');
-  position: absolute;
+  --_width: clamp(100px, 20vw, 300px);
+  --_aspect-ratio: 1.15;
+  --_img: url('./img/dbjack-king.png');
   top: 0;
   right: 0;
 }
 
 .user-choices::before {
-  content: url('./img/Group\ 7.png');
-  position: absolute;
-  bottom: 0;
+  --_width: clamp(80px, 25vw, 250px);
+  --_aspect-ratio: 2;
+  --_img: url('./img/years.png');
+  bottom: -10%;
   left: 0;
 }
 
-.user-choices::after {
-  content: url('./img/Group\ 6.png');
-  position: absolute;
-  bottom: 5%;
+.user-choices::after,
+body#game::after {
+  --_width: clamp(100px, 25vw, 350px);
+  --_aspect-ratio: 1.7;
+  --_img: url('./img/tally-only.png');
+  bottom: 10%;
   right: -5%;
 }
 
-/* background imagery addition for the index html */
 body#game::after {
-  content: url('./img/Group\ 6.png');
-  position: absolute;
-  bottom: 5%;
+  right: auto;
   left: -8%;
 }
 
 body#game::before {
-  content: url('./img/Group\ 8.png');
-  position: absolute;
+  --_width: clamp(100px, 20vw, 200px);
+  --_aspect-ratio: 1.1;
+  --_img: url('./img/old-tic-tacs.png');
   bottom: 0%;
   right: 1%;
 }
 
 /*  */
+footer {
+  min-height: 100px;
+}
+
 section {
   font-family: var(--ff-body);
   min-height: 100%;
@@ -169,10 +192,20 @@ section.user-choices {
   gap: 1rem;
   justify-content: center;
   align-items: center;
+  padding-top: 50px;
 }
 
 #choose-rounds select#select-rounds > option {
   font-size: 1rem;
+}
+
+.custom-container {
+  display: none;
+  min-width: 200px;
+}
+
+.custom-container[data-visible] {
+  display: inline-block;
 }
 
 input#cutsom-rounds {
