@@ -8,7 +8,7 @@ const gameBoard = (() => {
   return { getBoard, clearBoard, updateBoard };
 })();
 
-const Player = (sign, controller = 'human') => {
+const Player = (sign, controller) => {
   const _sign = sign;
   const getSign = () => _sign;
 
@@ -16,6 +16,8 @@ const Player = (sign, controller = 'human') => {
   const updateBoard = (index) => _board.push(index);
   const getBoard = () => _board;
   const clearBoard = () => _board.splice(0, _board.length);
+
+  const _controller = controller;
 
   /*  
     the code for timeout, waitUserInput and base structure of _humanMove are based on code from this stack overflow question: https://stackoverflow.com/questions/51013412/how-to-use-javascript-await-on-user-input-in-an-async-function
@@ -51,15 +53,33 @@ const Player = (sign, controller = 'human') => {
     });
     return index;
   };
-  const _AIMove = () => {};
+  const _AIMove = async (level) => {
+    // if (level === 'beginner') {
+    let options = gameBoard.getBoard().reduce(function (a, e, i) {
+      if (e === 0) a.push(i);
+      return a;
+    }, []);
+    let index = options[Math.floor(Math.random() * options.length)];
+    let gridCell = displayController.fillCell(
+      document.querySelector(`[data-id="${index}"]`),
+      _sign
+    );
+    console.log(_sign, index, gridCell);
+    return index;
+    // }
+  };
 
   const move = async function () {
-    if (controller === 'human') {
+    if (_controller === 'human') {
       return _humanMove();
+    } else if (_controller === 'ai') {
+      return _AIMove();
     } else {
-      console.log('ai');
+      console.log('problem' + _controller);
     }
   };
+
+  const getController = (controller) => controller;
 
   return {
     getSign,
@@ -67,6 +87,7 @@ const Player = (sign, controller = 'human') => {
     getBoard,
     clearBoard,
     move,
+    getController,
   };
 };
 
@@ -272,6 +293,6 @@ const displayController = (() => {
 const rounds = sessionStorage.getItem('numberOfRounds');
 const playerOController = sessionStorage.getItem('playerOController');
 const playerXController = sessionStorage.getItem('playerXController');
-const playerX = Player('X');
-const playerO = Player('O');
+const playerX = Player('X', playerXController);
+const playerO = Player('O', playerOController);
 Game.play(rounds);

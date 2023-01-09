@@ -45,10 +45,13 @@ playGame.addEventListener('click', () => {
       : defaultValue;
   };
 
-  const playerXController = _getBtnValue(playerXControllerBtns, 'human');
-  const playerOController = _getBtnValue(playerOControllerBtns, 'human');
+  //   const playerXController = _getBtnValue(playerXControllerBtns, 'human');
+  //   const playerOController = _getBtnValue(playerOControllerBtns, 'ai');
+  const playerOController = _findCheckedRadioBtn(playerOControllerBtns).value;
+  const playerXController = _findCheckedRadioBtn(playerXControllerBtns).value;
+  console.log(playerOController, playerXController);
   sessionStorage.setItem('numberOfRounds', rounds);
   sessionStorage.setItem('playerXController', playerXController);
-  sessionStorage.setItem('playerXController', playerOController);
+  sessionStorage.setItem('playerOController', playerOController);
   location.href = './game.html';
 });
