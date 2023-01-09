@@ -110,6 +110,7 @@ const Round = () => {
     [winner, looser].forEach((player) => player.clearBoard());
     gameBoard.clearBoard();
     displayController.clearCellClasses();
+    displayController.clearGlow();
 
     round: for (let i = 0; i < 9; i++) {
       let index;
@@ -120,6 +121,7 @@ const Round = () => {
         player = winner;
       }
       currentTurnSign = player.getSign();
+      displayController.toggleGlow(currentTurnSign);
       index = await player.move();
 
       gameBoard.updateBoard(index, currentTurnSign);
@@ -131,6 +133,7 @@ const Round = () => {
           return winner;
         }
       }
+      displayController.toggleGlow(currentTurnSign);
     }
     return (winner = 0); //0 means draw, no winner
   };
@@ -144,10 +147,11 @@ const Game = (() => {
   let _score = { X: 0, O: 0 };
 
   const _updateScore = (winner) => (_score[winner] += 1);
-  const clearScore = () => (_score = 0); //is needed?
+  const clearScore = () => (_score = { X: 0, O: 0 }); //is needed?
   const _getScore = (sign) => _score[sign]; //is needed?
 
   const play = async (rounds) => {
+    displayController.clearDisplayResult();
     displayController.updateDetails(displayController.totalRounds, rounds);
     [displayController.scoreO, displayController.scoreX].forEach((box) =>
       displayController.updateDetails(box, 0)
@@ -156,6 +160,7 @@ const Game = (() => {
     let looser;
     let newRound = Round();
     for (let currentRound = 1; currentRound <= rounds; currentRound++) {
+      let msg;
       displayController.updateDetails(
         displayController.currentRound,
         currentRound
@@ -165,26 +170,44 @@ const Game = (() => {
           ? await newRound.play()
           : await newRound.play(winner, looser);
       if (winner) {
+        msg = `${winner.getSign()} won this round!`;
         looser = winner == playerX ? playerO : playerX;
-        console.log(winner.getSign() + ' won', looser.getSign() + ' lost');
         _updateScore(winner.getSign());
         displayController.updateDetails(displayController.scoreO, _score.O);
         displayController.updateDetails(displayController.scoreX, _score.X);
       } else {
-        console.log("it's a draw");
         // choose randomly which one will play first next round
         winner = [playerX, playerO][Math.floor(Math.random() * 2)];
         looser = winner == playerX ? playerO : playerX;
+        msg = "It's a tie!";
       }
+      displayController.displayResult(msg);
+      setTimeout(() => {
+        displayController.clearDisplayResult();
+      }, 1000);
     }
+    let msg;
+    if (_score.O > _score.X) {
+      msg = 'O won the game!';
+    } else if (_score.X > _score.O) {
+      msg = 'X won the game!';
+    } else {
+      msg = "It's a tie!";
+    }
+    displayController.displayResult(msg);
   };
 
-  return { play };
+  return { play, clearScore, _getScore };
 })();
 
 const displayController = (() => {
   const gridItems = document.querySelectorAll('.grid-item');
   const restartBtn = document.querySelector('.restart');
+  restartBtn.addEventListener('click', () => {
+    Game.clearScore();
+    Game.play(rounds);
+  });
+
   const menuBtn = document.querySelector('.menu');
   menuBtn.addEventListener('click', () => {
     sessionStorage.clear();
@@ -195,6 +218,7 @@ const displayController = (() => {
   const scoreO = document.querySelector('#score-o-num');
   const totalRounds = document.querySelector('#total-rounds');
   const currentRound = document.querySelector('#current-round');
+  const resultDiv = document.querySelector('#result-msg');
 
   const updateDetails = (htmlBox, num) => {
     htmlBox.textContent = num;
@@ -208,14 +232,40 @@ const displayController = (() => {
     cell.classList.add('filled', `display-${sign}`);
   };
 
+  const displayResult = (msg) => {
+    resultDiv.textContent = msg;
+  };
+  const clearDisplayResult = () => {
+    resultDiv.textContent = '';
+  };
+
+  const signX = document.querySelector('#sign-x');
+  const signO = document.querySelector('#sign-o');
+  const toggleGlow = (sign) => {
+    let elem = sign === 'X' ? signX : signO;
+    elem.toggleAttribute('data-glow');
+  };
+
+  const clearGlow = () => {
+    [signO, signX].forEach((sign) =>
+      sign.hasAttribute('data-glow') ? sign.toggleAttribute('data-glow') : ''
+    );
+  };
+
   return {
     fillCell,
     clearCellClasses,
     updateDetails,
+    displayResult,
+    clearDisplayResult,
+    toggleGlow,
+    clearGlow,
     totalRounds,
     currentRound,
     scoreO,
     scoreX,
+    signX,
+    signO,
   };
 })();
 

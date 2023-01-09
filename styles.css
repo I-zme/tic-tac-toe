@@ -344,10 +344,15 @@ input[type='radio']:checked + label::after {
 }
 
 #result-msg {
+  --_height: 1.5rem;
   width: clamp(300px, 50vw, 600px);
   height: fit-content;
-  min-height: 1.5rem;
+  min-height: calc(1.5 * var(--_height));
+  padding: 0;
   grid-column: 1/-1;
+  text-align: center;
+  font-size: var(--_height);
+  filter: drop-shadow(0 0 3px magenta);
 }
 
 /* utilities */
@@ -357,6 +362,10 @@ input[type='radio']:checked + label::after {
   font-weight: 600;
   color: rgb(47, 47, 47);
   filter: drop-shadow(0 0 1px white);
+}
+
+[data-glow] {
+  filter: drop-shadow(0 0 3px blue);
 }
 
 .btn-no-bg {
