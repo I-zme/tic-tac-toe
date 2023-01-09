@@ -9,15 +9,18 @@
     <title>Document</title>
 </head>
 <body id="game">
+    <div class="btns">
+        <button class="menu | btn-no-bg">Menu</button>
+        <button class="restart | btn-no-bg">Restart round</button>
+    </div>
     <div class="game-info">
-        <div class="round">Round: <span id="current-round"></span> / <span id="total-rounds"></span></div>
-        <div class="score">Score:
-            <p class="score-x">X: <span id="score-x-num"></span></p>
-            <p class="score-o">O: <span id="score-o-num"></span></p>
+        <div class="round"><span>Round:</span> <span id="current-round" class="handwritten"></span> / <span id="total-rounds" class="handwritten"></span></div>
+        <div class="score"><p class="entire-row">Score:</p>
+            <p class="score-x"><span>X:</span> <span id="score-x-num" class="handwritten"></span></p>
+            <p class="score-o"><span>O:</span> <span id="score-o-num" class="handwritten"></span></p>
         </div>
     </div>
-    <button class="restart">Restart round</button>
-    <button class="menu">Menu</button>
+    <div id="result-msg"></div>
     <div id="game-grid">
         <div class="grid-item |" data-id="0"></div>
         <div class="grid-item |" data-id="1"></div>
@@ -29,5 +32,6 @@
         <div class="grid-item |" data-id="7"></div>
         <div class="grid-item |" data-id="8"></div>
     </div>
+    <footer></footer>
 </body>
 </html>

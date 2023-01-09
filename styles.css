@@ -82,6 +82,11 @@ svg {
 /* GENERAL STYLING */
 body {
   background-image: url('./img/TexturesCom_ConcreteBare0432_3_seamless_S.png');
+  overflow-x: hidden;
+}
+
+body#index {
+  overflow-y: hidden;
 }
 
 /* background imagery addition for index and game html */
@@ -91,7 +96,7 @@ section.intro::before,
 .user-choices::before,
 .user-choices::after,
 body#game::after,
-body#game::before {
+#game::before {
   content: '';
   position: absolute;
   width: var(--_width);
@@ -146,11 +151,11 @@ body#game::after {
   left: -8%;
 }
 
-body#game::before {
+#game::before {
   --_width: clamp(100px, 20vw, 200px);
   --_aspect-ratio: 1.1;
   --_img: url('./img/old-tic-tacs.png');
-  bottom: 0%;
+  bottom: 0;
   right: 1%;
 }
 
@@ -163,6 +168,8 @@ section {
   font-family: var(--ff-body);
   min-height: 100%;
   position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 section h3 {
@@ -174,7 +181,7 @@ section.intro {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
 }
 
 section.user-choices {
@@ -259,16 +266,22 @@ input[type='radio']:checked + label::after {
 }
 
 /* GAME STYLING */
+#game {
+  font-family: var(--ff-body);
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: max-content;
+  gap: 1rem;
+}
+
 #game-grid {
   display: grid;
-  height: 300px;
-  width: 300px;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
   position: relative;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
+  grid-column: 1/-1;
 }
 
 #game-grid::after {
@@ -299,7 +312,53 @@ input[type='radio']:checked + label::after {
   content: url('./img/naught.png');
 }
 
+.btns,
+.game-info {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  grid-row: 1;
+}
+
+.game-info {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.btns {
+  grid-column: 2;
+  justify-self: end;
+  align-self: start;
+}
+
+.game-info .score {
+  display: grid;
+  grid-template-rows: min-content min-content;
+  grid-template-columns: max-content max-content;
+  align-items: center;
+  gap: 1rem 3rem;
+}
+
+.game-info .score p.entire-row {
+  grid-column: 1/-1;
+}
+
+#result-msg {
+  width: clamp(300px, 50vw, 600px);
+  height: fit-content;
+  min-height: 1.5rem;
+  grid-column: 1/-1;
+}
+
 /* utilities */
+.handwritten {
+  font-family: 'Give You Glory', cursive;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgb(47, 47, 47);
+  filter: drop-shadow(0 0 1px white);
+}
+
 .btn-no-bg {
   background-color: inherit;
   border: none;
@@ -312,4 +371,28 @@ input[type='radio']:checked + label::after {
 .btn-no-bg:hover {
   filter: drop-shadow(0 0 10px red);
   /* -webkit-filter: drop-shadow(); */
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 30em) {
+  #game::before {
+    content: none;
+  }
+
+  #game {
+    grid-template-columns: 1fr;
+  }
+
+  .btns,
+  .game-info {
+    justify-self: inherit;
+    grid-column: 1;
+  }
+
+  .btns {
+    grid-row: 1;
+  }
+  .game-info {
+    grid-row: 2;
+  }
 }
