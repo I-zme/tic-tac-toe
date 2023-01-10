@@ -226,7 +226,7 @@ input#cutsom-rounds {
   justify-content: center;
 }
 
-.choose-players .choose-controller label {
+.choose-players label {
   display: inline-block;
   font-family: 'Permanent Marker';
   cursor: pointer;
@@ -234,9 +234,9 @@ input#cutsom-rounds {
   padding: 0.3em;
   position: relative;
 }
-.choose-players .choose-controller label:hover {
+.choose-players label:hover {
   --_transform: scale(1.2);
-  color: grey;
+  color: rgb(39, 39, 39);
   transform: var(--_transform);
   -webkit-transform: var(--_transform);
   -moz-transform: var(--_transform);
@@ -259,10 +259,18 @@ input[type='radio']:checked + label::after {
   border-radius: 79% 57% 83% 50%;
 }
 
-.choose-players .choose-controller input[type='radio'] {
+.choose-players input[type='radio'] {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+}
+
+.choose-ai-level {
+  display: none;
+}
+
+.choose-ai-level[data-visible] {
+  display: block;
 }
 
 /* GAME STYLING */

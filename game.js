@@ -5,10 +5,45 @@ const gameBoard = (() => {
   const clearBoard = () => _board.fill(0);
   const getBoard = () => _board;
 
-  return { getBoard, clearBoard, updateBoard };
+  // calculating and checking board rows
+  const _difference = (array) => {
+    [a, b, c] = array.sort();
+    return c - b === b - a ? c - b : 0;
+  };
+  const _sum = (array) => array.reduce((sum, num) => (sum += num), 0);
+  const _isWinningRow = function (array) {
+    const arrDiff = _difference(array);
+    if (arrDiff) {
+      const arrSum = _sum(array);
+      if (
+        arrSum === 12 ||
+        (arrDiff === 1 && (arrSum === 3 || arrSum === 21)) ||
+        (arrDiff === 3 && (arrSum === 9 || arrSum === 15))
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+  const checkRows = (fullArray) => {
+    // iterating over the array with every new addition to it, to check the rows enabled by this new addition. so if the array is [1,2,3,4] it will check [1,2,4],[1,3,4],[2,3,4] but not [1,2,3], under the assumption that that had been checked previously, to avoid doing the same calculations over again.
+    for (let i = 0; i < fullArray.length; i++) {
+      for (let j = i + 1; j < fullArray.length - 1; j++) {
+        let tempArray = [
+          fullArray[i],
+          fullArray[j],
+          fullArray[fullArray.length - 1],
+        ];
+        if (_isWinningRow(tempArray)) return tempArray;
+      }
+    }
+    return false;
+  };
+
+  return { getBoard, clearBoard, updateBoard, checkRows };
 })();
 
-const Player = (sign, controller) => {
+const Player = (sign, controller, level) => {
   const _sign = sign;
   const getSign = () => _sign;
 
@@ -18,6 +53,7 @@ const Player = (sign, controller) => {
   const clearBoard = () => _board.splice(0, _board.length);
 
   const _controller = controller;
+  const _AILevel = level;
 
   /*  
     the code for timeout, waitUserInput and base structure of _humanMove are based on code from this stack overflow question: https://stackoverflow.com/questions/51013412/how-to-use-javascript-await-on-user-input-in-an-async-function
@@ -53,21 +89,55 @@ const Player = (sign, controller) => {
     });
     return index;
   };
-  const _AIMove = async (level) => {
+
+  const _randomMove = (options) => {
+    let index = options[Math.floor(Math.random() * options.length)];
+    // let gridCell = displayController.fillCell(
+    //   document.querySelector(`[data-id="${index}"]`),
+    //   _sign
+    // );
+    return index;
+  };
+
+  const checkOptions = (playerBoard, options) => {
+    for (let i = 0; i <= options.length; i++) {
+      let optionalArray = [...playerBoard, options[i]];
+      if (gameBoard.checkRows(optionalArray)) return optionalArray;
+    }
+  };
+
+  const _AIMove = async (_AILevel) => {
     await timeout(500);
-    let options = gameBoard.getBoard().reduce(function (a, e, i) {
+    let boardOptions = gameBoard.getBoard().reduce(function (a, e, i) {
       if (e === 0) a.push(i);
       return a;
     }, []);
-    // if (level === 'beginner') {
-    let index = options[Math.floor(Math.random() * options.length)];
+    let index;
+    if (level === 'easy') {
+      index = _randomMove(boardOptions);
+    } else if (level === 'medium') {
+      if (getBoard().length >= 2) {
+        let oppositeBoard =
+          _sign === 'X' ? playerO.getBoard() : playerX.getBoard();
+        let playerWinningRow = checkOptions(getBoard(), boardOptions);
+        let oppositeWinningRow = checkOptions(oppositeBoard, boardOptions);
+        if (playerWinningRow) {
+          index = playerWinningRow.pop();
+        } else if (oppositeWinningRow) {
+          index = oppositeWinningRow.pop();
+        } else {
+          index = _randomMove(boardOptions);
+        }
+      } else {
+        index = _randomMove(boardOptions);
+      }
+    }
     let gridCell = displayController.fillCell(
       document.querySelector(`[data-id="${index}"]`),
       _sign
     );
     await timeout(500);
     return index;
-    // }
   };
 
   const move = async function () {
@@ -93,40 +163,6 @@ const Player = (sign, controller) => {
 };
 
 const Round = () => {
-  const _difference = (array) => {
-    [a, b, c] = array.sort();
-    return c - b === b - a ? c - b : 0;
-  };
-  const _sum = (array) => array.reduce((sum, num) => (sum += num), 0);
-  const _isWinningRow = function (array) {
-    const arrDiff = _difference(array);
-    if (arrDiff) {
-      const arrSum = _sum(array);
-      if (
-        arrSum === 12 ||
-        (arrDiff === 1 && (arrSum === 3 || arrSum === 21)) ||
-        (arrDiff === 3 && (arrSum === 9 || arrSum === 15))
-      ) {
-        return true;
-      }
-    }
-    return false;
-  };
-  const _checkRows = (fullArray) => {
-    // iterating over the array with every new addition to it, to check the rows enabled by this new addition. so if the array is [1,2,3,4] it will check [1,2,4],[1,3,4],[2,3,4] but not [1,2,3], under the assumption that that had been checked previously, to avoid doing the same calculations over again.
-    for (let i = 0; i < fullArray.length; i++) {
-      for (let j = i + 1; j < fullArray.length - 1; j++) {
-        let tempArray = [
-          fullArray[i],
-          fullArray[j],
-          fullArray[fullArray.length - 1],
-        ];
-        if (_isWinningRow(tempArray)) return tempArray;
-      }
-    }
-    return false;
-  };
-
   let currentTurnSign;
   const play = async (winner = playerX, looser = playerO) => {
     [winner, looser].forEach((player) => player.clearBoard());
@@ -150,7 +186,7 @@ const Round = () => {
       player.updateBoard(Number(index));
       if (i >= 4) {
         let tempBoard = player.getBoard();
-        if (_checkRows(tempBoard)) {
+        if (gameBoard.checkRows(tempBoard)) {
           winner = player;
           return winner;
         }
@@ -294,6 +330,8 @@ const displayController = (() => {
 const rounds = sessionStorage.getItem('numberOfRounds');
 const playerOController = sessionStorage.getItem('playerOController');
 const playerXController = sessionStorage.getItem('playerXController');
-const playerX = Player('X', playerXController);
-const playerO = Player('O', playerOController);
+const playerXAILevel = sessionStorage.getItem('playerXAILevel');
+const playerOAILevel = sessionStorage.getItem('playerOAILevel');
+const playerX = Player('X', playerXController, playerXAILevel);
+const playerO = Player('O', playerOController, playerOAILevel);
 Game.play(rounds);

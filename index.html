@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="choose-players">
-            <div class="player-x">
+            <div class="player-x | player-container">
                 <h3>Player 1</h3>
                 <div class="player-sign">
                     weapon of choice: <span class="sign">X</span>
@@ -41,8 +41,13 @@
                     <input type="radio" name="choose-controller-x" class="human" value="human" id="human-x" checked></input><label for="human-x">human</label>
                    <input type="radio" name="choose-controller-x" class="ai" value="ai" id="ai-x"></input> <label for="ai-x">AI</label>
                 </div>
+                <div class="choose-ai-level">
+                    <h3>AI level:</h3>
+                    <input type="radio" name="choose-level-x" class="easy" value="easy" id="easy-x"></input><label for="easy-x">Easy</label>
+                    <input type="radio" name="choose-level-x" class="medium" value="medium" id="medium-x" checked></input><label for="medium-x">Medium</label>
+                </div>
             </div>
-            <div class="player-o">
+            <div class="player-o | player-container">
                 <h3>Player 2</h3>
                 <div class="player-sign">
                     weapon of choice: <span class="sign">O</span>
@@ -50,6 +55,11 @@
                 <div class="choose-controller">
                     <input type="radio" name="choose-controller-o" class="human" value="human" id="human-o"></input><label for="human-o">human</label>
                     <input type="radio" name="choose-controller-o" class="ai" value="ai" id="ai-o" checked></input><label for="ai-o">AI</label>
+                </div>
+                <div class="choose-ai-level" data-visible>
+                    <h3>AI level:</h3>
+                    <input type="radio" name="choose-level-o" class="easy" value="easy" id="easy-o"></input><label for="easy-o">Easy</label>
+                    <input type="radio" name="choose-level-o" class="medium" value="medium" id="medium-o" checked></input><label for="medium-o">Medium</label>
                 </div>
             </div>
         </div>
