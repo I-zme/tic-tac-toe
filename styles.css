@@ -88,10 +88,6 @@ body {
   overflow-x: hidden;
 }
 
-body#index {
-  overflow-y: hidden;
-}
-
 /* background imagery addition for index and game html */
 body#index::after,
 body#index::before,
@@ -164,15 +160,27 @@ body#game::after {
 
 /*  */
 footer {
-  min-height: 100px;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1rem;
+  font-family: var(--ff-handwritten);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+
+footer .website-by {
+  text-decoration: none;
+  padding: 0.3rem;
+  color: inherit;
 }
 
 section {
   font-family: var(--ff-body);
   min-height: 100%;
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 section h3 {
