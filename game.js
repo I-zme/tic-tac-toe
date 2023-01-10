@@ -44,6 +44,9 @@ const gameBoard = (() => {
 })();
 
 const Player = (sign, controller, level) => {
+  const _controller = controller;
+  const _AILevel = level;
+
   const _sign = sign;
   const getSign = () => _sign;
 
@@ -52,10 +55,7 @@ const Player = (sign, controller, level) => {
   const getBoard = () => _board;
   const clearBoard = () => _board.splice(0, _board.length);
 
-  const _controller = controller;
-  const _AILevel = level;
-
-  /*  
+  /*  HUMAN MOVEMENTS AND FUNCS
     the code for timeout, waitUserInput and base structure of _humanMove are based on code from this stack overflow question: https://stackoverflow.com/questions/51013412/how-to-use-javascript-await-on-user-input-in-an-async-function
    */
   let _moveCell;
@@ -90,6 +90,7 @@ const Player = (sign, controller, level) => {
     return index;
   };
 
+  // AI MOVEMENTS AND FUNCS
   const _randomMove = (options) => {
     let index = options[Math.floor(Math.random() * options.length)];
     // let gridCell = displayController.fillCell(
@@ -106,16 +107,17 @@ const Player = (sign, controller, level) => {
     }
   };
 
-  const _AIMove = async (_AILevel) => {
+  const _AIMove = async () => {
     await timeout(500);
+    let index;
     let boardOptions = gameBoard.getBoard().reduce(function (a, e, i) {
       if (e === 0) a.push(i);
       return a;
     }, []);
-    let index;
-    if (level === 'easy') {
+    // it's possible to add other levels of difficulty here
+    if (_AILevel === 'easy') {
       index = _randomMove(boardOptions);
-    } else if (level === 'medium') {
+    } else if (_AILevel === 'medium') {
       if (getBoard().length >= 2) {
         let oppositeBoard =
           _sign === 'X' ? playerO.getBoard() : playerX.getBoard();
@@ -150,15 +152,12 @@ const Player = (sign, controller, level) => {
     }
   };
 
-  const getController = (controller) => controller;
-
   return {
     getSign,
     updateBoard,
     getBoard,
     clearBoard,
     move,
-    getController,
   };
 };
 
@@ -200,13 +199,9 @@ const Round = () => {
 };
 
 const Game = (() => {
-  // variables
-  //   const numberOfRounds = rounds;
   let _score = { X: 0, O: 0 };
-
   const _updateScore = (winner) => (_score[winner] += 1);
-  const clearScore = () => (_score = { X: 0, O: 0 }); //is needed?
-  const _getScore = (sign) => _score[sign]; //is needed?
+  const clearScore = () => (_score = { X: 0, O: 0 });
 
   const play = async (rounds) => {
     displayController.clearDisplayResult();
@@ -255,23 +250,26 @@ const Game = (() => {
     displayController.displayResult(msg);
   };
 
-  return { play, clearScore, _getScore };
+  return { play, clearScore };
 })();
 
 const displayController = (() => {
+  //user interact with the interface
   const gridItems = document.querySelectorAll('.grid-item');
   const restartBtn = document.querySelector('.restart');
+  const menuBtn = document.querySelector('.menu');
+
   restartBtn.addEventListener('click', () => {
     Game.clearScore();
     Game.play(rounds);
   });
 
-  const menuBtn = document.querySelector('.menu');
   menuBtn.addEventListener('click', () => {
     sessionStorage.clear();
     location.href = './index.html';
   });
 
+  // update and display info
   const scoreX = document.querySelector('#score-x-num');
   const scoreO = document.querySelector('#score-o-num');
   const totalRounds = document.querySelector('#total-rounds');
@@ -282,12 +280,12 @@ const displayController = (() => {
     htmlBox.textContent = num;
   };
 
-  const clearCellClasses = () => {
-    gridItems.forEach((cell) => (cell.className = 'grid-item |'));
-  };
-
   const fillCell = (cell, sign) => {
     cell.classList.add('filled', `display-${sign}`);
+  };
+
+  const clearCellClasses = () => {
+    gridItems.forEach((cell) => (cell.className = 'grid-item |'));
   };
 
   const displayResult = (msg) => {

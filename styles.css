@@ -1,15 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Give+You+Glory&family=Nothing+You+Could+Do&family=Permanent+Marker&family=Reenie+Beanie&family=Rock+Salt&family=Splash&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Give+You+Glory&family=Permanent+Marker&family=Rock+Salt&display=swap');
 
 :root {
-  /* font-family: 'Caveat Brush', cursive; //maybe not for body
-font-family: 'Give You Glory', cursive; //not for body
-font-family: 'Nothing You Could Do', cursive; //not for body
-font-family: 'Permanent Marker', cursive;
-font-family: 'Reenie Beanie', cursive;//body
-font-family: 'Rock Salt', cursive;
-font-family: 'Splash', cursive; //not for body, maybe just not */
-
   --ff-body: 'Rock Salt', cursive;
+  --ff-handwritten: 'Give You Glory', cursive;
+  --ff-marker: 'Permanent Marker', cursive;
+
+  --size-400: 1rem;
+  --size-em-600: 2em;
+  --fw-600: 600;
+  --fs-400: 1rem;
+  --fs-500: 1.5rem;
+
+  --clr-accent-500: hsl(354, 98%, 45%);
+  --clr-accent-700: rgb(39, 39, 39);
 }
 
 /* RESET */
@@ -173,7 +176,7 @@ section {
 }
 
 section h3 {
-  font-weight: 600;
+  font-weight: var(--fw-600);
 }
 
 section.intro {
@@ -181,14 +184,14 @@ section.intro {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(var(--fs-500), 4vw, 2rem);
 }
 
 section.user-choices {
   text-align: center;
-  font-size: clamp(1rem, 5vw, 1.5rem);
+  font-size: clamp(var(--fs-400), 5vw, var(--fs-500));
   display: grid;
-  gap: 1rem;
+  gap: var(--size-400);
   justify-items: center;
   align-content: space-evenly;
 }
@@ -196,14 +199,14 @@ section.user-choices {
 #choose-rounds {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: var(--size-400);
   justify-content: center;
   align-items: center;
   padding-top: 50px;
 }
 
 #choose-rounds select#select-rounds > option {
-  font-size: 1rem;
+  font-size: var(--fs-400);
 }
 
 .custom-container {
@@ -221,22 +224,22 @@ input#cutsom-rounds {
 
 .choose-players {
   display: flex;
-  gap: 2em;
+  gap: var(--size-em-600);
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .choose-players label {
   display: inline-block;
-  font-family: 'Permanent Marker';
+  font-family: var(--ff-marker);
   cursor: pointer;
-  margin: 1rem;
+  margin: var(--size-400);
   padding: 0.3em;
   position: relative;
 }
 .choose-players label:hover {
   --_transform: scale(1.2);
-  color: rgb(39, 39, 39);
+  color: var(--clr-accent-700);
   transform: var(--_transform);
   -webkit-transform: var(--_transform);
   -moz-transform: var(--_transform);
@@ -281,7 +284,6 @@ input[type='radio']:checked + label::after {
   align-items: center;
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: max-content;
-  gap: 1rem;
 }
 
 #game-grid {
@@ -324,7 +326,7 @@ input[type='radio']:checked + label::after {
 .game-info {
   display: grid;
   gap: 0.5rem;
-  padding: 1rem 2rem;
+  padding: var(--size-400) var(--size-em-600);
   grid-row: 1;
 }
 
@@ -344,7 +346,7 @@ input[type='radio']:checked + label::after {
   grid-template-rows: min-content min-content;
   grid-template-columns: max-content max-content;
   align-items: center;
-  gap: 1rem 3rem;
+  gap: var(--size-400) var(--size-em-600);
 }
 
 .game-info .score p.entire-row {
@@ -352,7 +354,8 @@ input[type='radio']:checked + label::after {
 }
 
 #result-msg {
-  --_height: 1.5rem;
+  --_filter: drop-shadow(0 0 3px var(--clr-accent-500));
+  --_height: var(--fs-500);
   width: clamp(300px, 50vw, 600px);
   height: fit-content;
   min-height: calc(1.5 * var(--_height));
@@ -360,34 +363,45 @@ input[type='radio']:checked + label::after {
   grid-column: 1/-1;
   text-align: center;
   font-size: var(--_height);
-  filter: drop-shadow(0 0 3px magenta);
+  filter: var(--_filter);
+  -webkit-filter: var(--_filter);
+  margin: var(--size-400) 0;
 }
 
 /* utilities */
 .handwritten {
-  font-family: 'Give You Glory', cursive;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: rgb(47, 47, 47);
-  filter: drop-shadow(0 0 1px white);
+  --_filter: drop-shadow(0 0 1px white);
+  font-family: var(--ff-handwritten);
+  font-size: var(--fs-500);
+  font-weight: var(--fw-600);
+  color: var(--clr-accent-700);
+  filter: var(--_filter);
+  -webkit-filter: var(--_filter);
 }
 
 [data-glow] {
-  filter: drop-shadow(0 0 3px blue);
+  --_filter: drop-shadow(0 0 1px var(--clr-accent-500))
+    drop-shadow(0 0 3px white);
+  --_transform: scale(1.3);
+  display: inline-block;
+  filter: var(--_filter);
+  -webkit-filter: var(--_filter);
+  transform: var(--_transform);
+  -webkit-transform: var(--_transform);
+  -moz-transform: var(--_transform);
 }
 
 .btn-no-bg {
   background-color: inherit;
   border: none;
   cursor: pointer;
-  font-weight: 600;
-  filter: drop-shadow(0 0 10px grey);
-  /* -webkit-filter: drop-shadow(); */
+  font-weight: var(--fw-600);
 }
 
 .btn-no-bg:hover {
-  filter: drop-shadow(0 0 10px red);
-  /* -webkit-filter: drop-shadow(); */
+  --_filter: drop-shadow(0 0 10px var(--clr-accent-700));
+  filter: var(--_filter);
+  -webkit-filter: var(--_filter);
 }
 
 /* MEDIA QUERIES */
