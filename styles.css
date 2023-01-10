@@ -11,6 +11,7 @@
   --fs-400: 1rem;
   --fs-500: 1.5rem;
 
+  --clr-bg: hsl(20, 1%, 52%);
   --clr-accent-500: hsl(354, 98%, 45%);
   --clr-accent-700: rgb(39, 39, 39);
 }
@@ -83,7 +84,8 @@ svg {
 }
 
 /* GENERAL STYLING */
-body {
+
+html {
   background-image: url('./img/TexturesCom_ConcreteBare0432_3_seamless_S.png');
   overflow-x: hidden;
 }
@@ -289,9 +291,10 @@ input[type='radio']:checked + label::after {
 }
 
 .choose-players input[type='radio'] {
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 0;
 }
 
 .choose-ai-level {
