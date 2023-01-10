@@ -175,6 +175,12 @@ footer .website-by {
   padding: 0.3rem;
   color: inherit;
 }
+footer .website-by:hover {
+  --_transform: scale(1.3);
+  transform: var(--_transform);
+  -webkit-transform: var(--_transform);
+  -moz-transform: var(--_transform);
+}
 
 section {
   font-family: var(--ff-body);
@@ -215,6 +221,13 @@ section.user-choices {
 
 #choose-rounds select#select-rounds > option {
   font-size: var(--fs-400);
+}
+
+select,
+input {
+  background-color: hsla(0, 10%, 100%, 0.5);
+  border-radius: 3px;
+  border: none;
 }
 
 .custom-container {
