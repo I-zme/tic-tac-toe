@@ -219,8 +219,13 @@ section.user-choices {
   padding-top: 50px;
 }
 
+#choose-rounds select#select-rounds {
+  color: black;
+}
+
 #choose-rounds select#select-rounds > option {
   font-size: var(--fs-400);
+  color: black;
 }
 
 select,
@@ -284,9 +289,9 @@ input[type='radio']:checked + label::after {
 }
 
 .choose-players input[type='radio'] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
 }
 
 .choose-ai-level {
@@ -413,6 +418,7 @@ input[type='radio']:checked + label::after {
 }
 
 .btn-no-bg {
+  color: black;
   background-color: inherit;
   border: none;
   cursor: pointer;
